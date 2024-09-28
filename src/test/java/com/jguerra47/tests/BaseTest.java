@@ -1,4 +1,4 @@
-package com.jguerra47.base;
+package com.jguerra47.tests;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

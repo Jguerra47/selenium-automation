@@ -1,27 +1,29 @@
 package com.jguerra47.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class LoginPage {
-    private final WebDriver driver;
-    private final WebDriverWait wait;
+public class LoginPage extends BasePage {
 
-    private final By inputUsername = By.id("user-name");
-    private final By inputPassword = By.id("password");
-    private final By buttonLogin = By.id("login-button");
+    @FindBy(id = "user-name")
+    WebElement inputUsername;
+    @FindBy(id = "password")
+    WebElement inputPassword;
+    @FindBy(id = "login-button")
+    WebElement buttonLogin;
 
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        super(driver);
     }
 
-    public void enterCredentials(String username, String password) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(inputUsername)).sendKeys(username);
-        driver.findElement(inputPassword).sendKeys(password);
+    public void enterUsername(String username) {
+        inputUsername.sendKeys(username);
+    }
+
+    public void enterPassword(String password) {
+        inputPassword.sendKeys(password);
     }
 
     public void login() {

@@ -2,27 +2,35 @@ package com.jguerra47.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.jguerra47.base.BaseTest;
-import com.jguerra47.pages.InventoryPage;
+import com.jguerra47.pages.ProductsPage;
 import com.jguerra47.pages.LoginPage;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class LoginTest extends BaseTest {
+    LoginPage loginPage;
+    ProductsPage productsPage;
+
+    @BeforeEach
+    public void initializePages() {
+        loginPage = new LoginPage(driver);
+        productsPage = new ProductsPage(driver);
+    }
 
     @Test
     public void loginTest() {
         // Arrange
-        driver.get("https://www.saucedemo.com/");
+        String expectedPageTitle = "Products";
 
         // Act
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.enterCredentials("standard_user", "secret_sauce");
+        loginPage.open("https://www.saucedemo.com/");
+        loginPage.enterUsername("standard_user");
+        loginPage.enterPassword("secret_sauce");
         loginPage.login();
 
-        InventoryPage inventoryPage = new InventoryPage(driver);
-        String actualPageTitle = inventoryPage.getPageTitle();
+        String actualPageTitle = productsPage.getPageTitle();
 
         // Assert
-        assertEquals("Products", actualPageTitle, "The page title after login should be 'Products'.");
+        assertEquals(expectedPageTitle, actualPageTitle, "The page title after login should be 'Products'.");
     }
 }

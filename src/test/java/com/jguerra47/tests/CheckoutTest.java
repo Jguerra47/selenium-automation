@@ -1,40 +1,51 @@
 package com.jguerra47.tests;
 
-import com.jguerra47.base.BaseTest;
 import com.jguerra47.pages.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CheckoutTest extends BaseTest {
+    LoginPage loginPage;
+    ProductsPage productsPage;
+    CartPage cartPage;
+    CheckoutPage checkoutPage;
+    SuccessPage successPage;
+
+    @BeforeEach
+    public void initializePages() {
+        loginPage = new LoginPage(driver);
+        productsPage = new ProductsPage(driver);
+        cartPage = new CartPage(driver);
+        checkoutPage = new CheckoutPage(driver);
+        successPage = new SuccessPage(driver);
+    }
+
 
     @Test
     public void checkoutPricesMatchTest() {
         // Arrange
         int numberOfItems = 3;
-        driver.get("https://www.saucedemo.com/");
+        loginPage.open("https://www.saucedemo.com/");
 
         // Act
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.enterCredentials("standard_user", "secret_sauce");
+        loginPage.enterUsername("standard_user");
+        loginPage.enterPassword("secret_sauce");
         loginPage.login();
 
-        InventoryPage inventoryPage = new InventoryPage(driver);
-        List<String> shopPricesText = inventoryPage.getPrices(numberOfItems);
-        inventoryPage.addProductsToCart(numberOfItems);
-        inventoryPage.goToCart();
+        List<String> shopPricesText = productsPage.getPrices(numberOfItems);
+        productsPage.addProductsToCart(numberOfItems);
+        productsPage.goToCart();
 
-        CartPage cartPage = new CartPage(driver);
         cartPage.goToCheckout();
 
-        CheckoutPage checkoutPage = new CheckoutPage(driver);
         checkoutPage.enterCheckoutInformation("John", "Doe", "12345");
 
         List<String> checkoutPricesText = checkoutPage.getCheckoutPrices(numberOfItems);
         double itemTotalPrice = checkoutPage.getSubtotal();
         checkoutPage.finishPurchase();
 
-        SuccessPage successPage = new SuccessPage(driver);
         String successMessage = successPage.getTitle();
 
         double sumOfShopPrices = shopPricesText.stream()
