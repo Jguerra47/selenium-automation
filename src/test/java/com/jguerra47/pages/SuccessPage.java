@@ -1,18 +1,18 @@
 package com.jguerra47.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
-public class SuccessPage {
-    private final WebDriver driver;
-
-    private final By successTitle = By.xpath("//div[@data-test=\"header-container\"]/div[@data-test=\"secondary-header\"]/span[@data-test=\"title\"]");
+public class SuccessPage extends BasePage {
+    @FindBy(xpath = "//div[@data-test=\"header-container\"]/div[@data-test=\"secondary-header\"]/span[@data-test=\"title\"]")
+    WebElement successTitle;
 
     public SuccessPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     public String getTitle() {
-        return driver.findElement(successTitle).getText();
+        return successTitle.getText();
     }
 }
